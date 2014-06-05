@@ -1,0 +1,198 @@
+MACHINE_OS=`uname`
+export EDITOR=vim
+
+export PATH=".:~/bin:/usr/local/bin:/usr/local/sbin:/usr/local/share/npm/bin:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:$PATH"
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
+
+### Added for Alpine 2.0
+export PATH="/opt/alps/bin:$PATH"
+
+#. ~/.nvm/nvm.sh
+
+# SHELL APPEARANCE CUSTOMISATION
+#######################################################
+function PWD {
+    pwd | awk -F/ '{print $(NF-1),$(NF)}' | sed 's/ /\//'
+}
+
+# http://www.funtoo.org/wiki/Prompt_Magic
+# https://wiki.archlinux.org/index.php/Color_Bash_Prompt
+TXTDEF='\e[0m'          # everything back to defaults
+FORBLU='\e[1;37;44m'
+FORGRE='\e[32m'
+FORORA='\e[33m'
+FORRED='\e[0;31m'
+
+BAKBLU='\e[37;1;44m'    # blue background
+BAKPUR='\e[37;1;45m'    # purple background
+BAKRED='\e[37;1;41m'    # red background
+BAKGRN='\e[37;1;42m'    # green background
+BLDWHT='\e[0;37;1m'     # bold white text
+
+git_prompt ()
+{
+    if ! git rev-parse --git-dir > /dev/null 2>&1; then
+        return 0
+    fi
+
+    git_branch=$(git branch 2>/dev/null| sed -n '/^\*/s/^\* //p')
+
+    if git diff --quiet 2>/dev/null >&2; then
+        # branch is clean
+        git_color=`tput setaf 2`
+    else
+        # branch is dirty
+        git_color=`tput setaf 1`
+    fi
+
+    reset=`tput sgr0`
+
+    echo " on ${git_color}$git_branch${reset}"
+}
+
+
+set_my_prompt() {
+    local YROOT='';
+    if [ "$YROOT_NAME" ]; then
+        YROOT=':'`echo $YROOT_NAME`
+    fi
+
+    #export PS1="${BAKBLU}\t${TXTDEF} [${FORGRE}\u@\h${TXTDEF}${YROOT}\$(git_prompt)] ${FORORA}\$(PWD)${TXTDEF}\n\$ "
+    export PS1="\n${BAKBLU}\u${TXTDEF} at ${FORGRE}\h$YROOT${TXTDEF} in ${FORORA}\w${TXTDEF}\$(git_prompt)\n\$ "
+    #export PROMPT_COMMAND="echo -n [$(date +%H:%M)]"
+}
+
+
+#set_my_prompt() {
+#    local OPEN="\[";
+#    local CLOSE="\]";
+#    local BLUE="${OPEN}\033[1;37;44m${CLOSE}";
+#    local RED="${OPEN}\033[1;31m${CLOSE}";
+#    local GREEN="${OPEN}\033[32m${CLOSE}";
+#    local WHITE="${OPEN}\033[0m${CLOSE}";
+#    local TXT="${OPEN}\033[37m${CLOSE}";
+#    if [ "$YROOT_NAME" ]; then
+#        YROOT=' - '`echo $YROOT_NAME`
+#    fi
+#    export PS1="\[${BLUE}\t${WHITE} [${GREEN}\u@\h${WHITE}${YROOT}] ${RED}\$(PWD)${WHITE}\n\$ ${WHITE}";
+#    #export PS1="\[${BLUE}\t${WHITE} [${GREEN}\u@\h${WHITE}${YROOT}] ${RED}\$(PWD)${WHITE}\n\$ ${TXT}";
+#}
+
+set_my_prompt
+
+# YVM AUTOCOMPLETE
+#######################################################
+	if [ -f /home/y/etc/yvm.bashrc ]; then
+		 source /home/y/etc/yvm.bashrc;
+	fi
+
+# SSH-AGENT
+#######################################################
+	#save ssh-agent info if we have it
+	if [ "$TERM" = "screen" -a "$SSH_AUTH_SOCK" != "" ]
+	then
+		ln -sf $SSH_AUTH_SOCK /tmp/${USER}_ssh_agent_auth
+                echo 'this is screen and sshauthsock is NOT empty, creating symlink'
+	fi
+
+	# retrieve ssh-agent info for screen terminals that don't have it
+	if [ "$TERM" = "screen" -a "$SSH_AUTH_SOCK" = "" ]
+	then
+		SSH_AUTH_SOCK=/tmp/${USER}_ssh_agent_auth
+		export SSH_AUTH_SOCK
+                echo 'this is screen and sshauthsock IS empty, creating SSH_AUTH_SOCK'
+	fi
+
+# SPECIAL FUNCTIONS
+#######################################################
+
+netinfo ()
+{
+    _interface=""
+    if [ "$1" ]
+        then
+        _interface=$1
+        if [ "$_interface" == "wired" ]
+            then
+            _interface="en0"
+            fi
+            if [ "$_interface" == "wifi" ]
+                then
+                _interface="en1"
+                fi
+
+                echo "-----------  Network Information for $_interface-----------"
+                ifconfig $_interface | grep 'media:' | grep -v 'supported' | awk '{print $3,$4}'
+                echo "IP Address: "
+                ifconfig $_interface | awk '/inet / {print $2}'
+                echo "Gateway: "
+                netstat -rn | grep default | awk '{print $2}'
+                echo "Public IP Address: "
+                curl -s http://checkip.dyndns.org | awk '{print $6}' | awk ' BEGIN { FS = "<" } { print $1 }'
+                echo "MAC Address: "
+                ifconfig $_interface | awk '/ether / {print $2}'
+                echo "---------------------------------------------------"
+
+                else
+                    echo "################################"
+                    echo "# WARNING: No interface defined #"
+                    echo "################################"
+                    echo "Please try again."
+                    echo "      usage: netinfo interface"
+                    fi
+}
+
+# ALIASES OF ALL TYPES SHAPES AND FORMS
+#######################################################
+
+# To temporarily bypass an alias, we precede the command with a \
+# Example: if the ls command was aliased to use the normal ls command
+# you would have to type: \ls
+
+## Modified commands
+# Default
+alias ..='cd .. && pwd'
+alias ...='cd ../..  && pwd'
+alias ....='cd ../../.. && pwd'
+alias cp='cp -i'
+alias rm='rm -i'
+alias mv='mv -i'
+alias diffez='diff -bBayl --suppress-common-lines'
+alias killdash='defaults write com.apple.dashboard mcx-disabled -boolean YES && killall Dock'
+alias resurectdash='defaults write com.apple.dashboard mcx-disabled -boolean NO && killall Dock'
+alias yscreen='screen -RU -c ~/.yscreenrc'
+alias tree='find . -print | sed -e "s;[^/]*/;|____;g;s;____|; |;g"'
+alias ssh='yssh'
+
+# Multiple ls commands
+export CLICOLOR=1                        # use colours
+export LSCOLORS=dxfxcxdxbxegedabagacad   # use yellow for directories
+alias ls='ls -F'                         #
+
+if [ "$MACHINE_OS" = "Darwin" ]
+  then
+  # Mac OS only
+  alias hostsedit='sudo vi /etc/hosts'
+  alias hostsreload='sudo niload -v -m hosts . < /etc/hosts && lookupd -flushcache'
+  alias fixpermsfiles='find . -type f -exec chmod 644 {} \;'
+  alias fixpermsdirs='find . -type d -exec chmod 755 {} \;'
+  alias goMetro='cd ~/Documents/Yahoo/work/cvs/yahoo-europe/properties/frontpage/metro/frontend/wireframe-test/static &&pwd'
+  # overwrite ssh alias
+  alias ssh='ssh'
+fi
+
+# CVS
+alias cvslocal='cvs status 2>/dev/null | grep Local'
+alias cvsneeds='cvs status 2>/dev/null | grep Needs'
+alias cvsu='cvs update -dP 2>/dev/null'
+alias cvsd='cvs diff -bBay --suppress-common-lines'
+
+alias crontab="VIM_CRONTAB=true crontab"
+source ~/.git-completion
+
+ note() {
+     /usr/bin/vim /Users/castroad/Dropbox/Backups/Notes/"$@".txt;
+ }
+

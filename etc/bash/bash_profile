@@ -1,0 +1,12 @@
+if [ -f ~/.bashrc ]; then
+    # load .bashrc for aliases and custom functions
+    source ~/.bashrc
+fi
+
+# Terminal configs
+# http://desp.night.pl/terminal.html
+    stty erase ^H # enable backspace and forward delete
+    export LC_ALL=en_US.UTF-8 # utf-8 support
+    # set Terminal's window title to hostname
+    name=`hostname`
+    echo -ne "\033]0;$name\007"
