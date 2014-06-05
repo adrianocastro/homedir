@@ -17,6 +17,12 @@ This is highly personal and may or may not work for you but feel free to clone o
 
 ## Usage and installation
 
-1. back up all your config files (e.g. .bashrc, .bash_profile, .vimrc, .gitconfig, etc)
+1. back up all your config files (e.g. `.bashrc`, `.bash_profile`, `.vimrc`, `.gitconfig`, etc)
 1. clone this repository
 1. manually create symlinks to the files in homedir/etc
+
+## TODO
+
+1. installation script offering automatic symlinking
+1. figure out integration with my [dotvim](https://github.com/adrianocastro/dotvim) setup
+1. investigate auto-syncing from github repository
