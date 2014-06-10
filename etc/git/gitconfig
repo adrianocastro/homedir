@@ -3,3 +3,13 @@
 [github]
 	user = adrianocastro
 	token = 6ebc4bfa3fa17f3615f2ad22cef0399b
+[core]
+	pager = less -r
+[color]
+	ui = true
+[diff]
+	tool = vimdiff
+[merge]
+	tool = vimdiff
+[difftool]
+	prompt = false
