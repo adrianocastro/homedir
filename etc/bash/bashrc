@@ -9,6 +9,13 @@ export PATH="/usr/local/heroku/bin:$PATH"
 ### Added for Alpine 2.0
 export PATH="/opt/alps/bin:$PATH"
 
+### Added for brew
+export PATH="$(brew --prefix mysql55)/bin:$PATH"
+
+### Added for ruby
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+
 #. ~/.nvm/nvm.sh
 
 # SHELL APPEARANCE CUSTOMISATION
