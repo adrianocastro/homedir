@@ -1,0 +1,20 @@
+# CUSTOM TYPES
+
+--type-add
+html=.haml
+
+--type-add
+css=.sass,.scss
+
+--type-set
+haml=.haml
+
+--type-set
+hamlc=.hamlc
+
+--type-add
+js=.coffee
+
+# OTHER
+--pager=more -R
+--ignore-dir=tmp
