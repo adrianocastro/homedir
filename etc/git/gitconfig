@@ -1,5 +1,6 @@
 [user]
 	email = ad@adrianocastro.net
+	name = Adriano Castro
 [github]
 	user = adrianocastro
 	token = 6ebc4bfa3fa17f3615f2ad22cef0399b
@@ -13,3 +14,13 @@
 	tool = vimdiff
 [difftool]
 	prompt = false
+[push]
+	default = upstream
+[alias]
+	tree = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s :::: %Cgreen(%cr)%Creset, %C(blue) %an <%ae>%Creset' --abbrev-commit --date=relative
+	lg = log --oneline --decorate
+	st = status
+	df = diff
+[filter "media"]
+	clean = git-media-clean %f
+	smudge = git-media-smudge %f
