@@ -16,6 +16,10 @@ export PATH="$(brew --prefix mysql55)/bin:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
+export AWS_CREDENTIAL_FILE="$HOME/.aws/credentials"
+
+export JAVA_HOME=$(/usr/libexec/java_home)
+
 #. ~/.nvm/nvm.sh
 
 # SHELL APPEARANCE CUSTOMISATION
@@ -57,6 +61,11 @@ git_prompt ()
     reset=`tput sgr0`
 
     echo " on ${git_color}$git_branch${reset}"
+}
+
+git_branch ()
+{
+    echo $(git branch 2>/dev/null| sed -n '/^\*/s/^\* //p')
 }
 
 
@@ -172,6 +181,7 @@ alias resurectdash='defaults write com.apple.dashboard mcx-disabled -boolean NO 
 alias yscreen='screen -RU -c ~/.yscreenrc'
 alias tree='find . -print | sed -e "s;[^/]*/;|____;g;s;____|; |;g"'
 alias ssh='yssh'
+alias g='git'
 
 # Multiple ls commands
 export CLICOLOR=1                        # use colours
@@ -198,6 +208,9 @@ alias cvsd='cvs diff -bBay --suppress-common-lines'
 
 alias crontab="VIM_CRONTAB=true crontab"
 source ~/.git-completion
+
+# Autocomplete for 'g' as well
+complete -o default -o nospace -F _git g
 
  note() {
      /usr/bin/vim /Users/castroad/Dropbox/Backups/Notes/"$@".txt;

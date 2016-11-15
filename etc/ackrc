@@ -4,7 +4,7 @@
 html=.haml
 
 --type-add
-css=.sass,.scss
+css=.sass,.scss,.less
 
 --type-set
 haml=.haml
@@ -12,9 +12,17 @@ haml=.haml
 --type-set
 hamlc=.hamlc
 
+--type-set
+gpx=.gpx
+
+--type-set
+tcx=.tcx
+
 --type-add
 js=.coffee
 
 # OTHER
 --pager=more -R
 --ignore-dir=tmp
+--ignore-dir=.jhw-cache
+--ignore-dir=log

@@ -10,3 +10,5 @@ fi
     # set Terminal's window title to hostname
     name=`hostname`
     echo -ne "\033]0;$name\007"
+export GOPATH="/Users/adriano"
+export PATH=$PATH:$GOPATH/bin

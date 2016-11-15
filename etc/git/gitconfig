@@ -6,12 +6,14 @@
 	token = 6ebc4bfa3fa17f3615f2ad22cef0399b
 [core]
 	pager = less -r
+	excludesfile = /Users/adriano/dev/strava/docs/.gitignore
 [color]
 	ui = true
 [diff]
 	tool = vimdiff
 [merge]
 	tool = vimdiff
+	conflictstyle = diff3
 [difftool]
 	prompt = false
 [push]
@@ -24,3 +26,11 @@
 [filter "media"]
 	clean = git-media-clean %f
 	smudge = git-media-smudge %f
+[mergetool]
+	prompt = false
+	keepBackup = false
+[mergetool "diffconflicts"]
+	keepBackup = false
+[grep]
+  lineNumber = true
+
